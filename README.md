@@ -1,6 +1,6 @@
 ## EvannaTabs
 
-<p align="center">Le me enjoying life (Life Sim Game)</p>
+<p align="center">Life Sim Game</p>
 
 ## Godot
 
