@@ -16,9 +16,9 @@ public class Room : Node2D
 		var evanna = evannaInstance.GetTree().Root.GetNode<Node2D>("Room").GetNode<Node2D>("Evanna");
 		evanna.Position = new Vector2(96, 50);
 
-		var worldStateScene = GD.Load<PackedScene>("res://Characters/Evanna/State/WorldState.tscn");
-		var worldStateInstance = worldStateScene.Instance();
-		evanna.AddChild(worldStateInstance);
+		var defaultStateScene = GD.Load<PackedScene>("res://Characters/Evanna/State/DefaultState.tscn");
+		var defaultStateInstance = defaultStateScene.Instance();
+		evanna.AddChild(defaultStateInstance);
 
 		//  // Called every frame. 'delta' is the elapsed time since the previous frame.
 		//  public override void _Process(float delta)

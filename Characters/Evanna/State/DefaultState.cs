@@ -1,52 +1,49 @@
 using Godot;
 using System;
 
-public class WorldState : Node
+public class DefaultState : Node
 {
 	// Declare member variables here. Examples:
 	// private int a = 2;
 	// private string b = "text";
 	public Node2D character;
 	public KinematicBody2D characterKinematic;
-	public int Speed { get; set; } = 15;
-	private Vector2 _mousePosition;
+	public float speed = 20f;
+	public Vector2 moveDirection;
+	public Vector2 mousePosition;
 	public Vector2 velocity;
-	private bool _mouseClicked = false;
-	public Timer timer;
+	public float distance;
+	public bool isMouseClicked = false;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		character = GetParent<Node2D>();
-		GD.Print(character.Name);
 		characterKinematic = GetParent<Node2D>().GetNode<KinematicBody2D>("KinematicBody2D");
-		timer = GetNode<Timer>("Timer");
-		timer.Connect("timeout", this, nameof(OnTimerTimeout));
 	}
 
 	public override void _Input(InputEvent @event)
 	{
 		if (@event.IsActionPressed("MouseLeft") == true && @event is InputEventMouseButton eventMouseButton)
 		{
-			GD.Print("Mouse Click/Unclick at: ", eventMouseButton.Position);
-			_mousePosition = eventMouseButton.Position;
-			_mouseClicked = true;
-			timer.Start();
+			mousePosition = eventMouseButton.Position;
+			isMouseClicked = true;
 		}
 	}
 
 	public override void _Process(float delta)
 	{
-		if (_mouseClicked == true)
+		if (isMouseClicked == true)
 		{
-			velocity = character.Position.DirectionTo(_mousePosition) * Speed;
+			moveDirection = mousePosition - characterKinematic.GlobalPosition;
+			velocity = moveDirection.Normalized() * speed;
 			characterKinematic.MoveAndSlide(velocity);
 		}
-	}
+		distance = characterKinematic.GlobalPosition.DistanceTo(mousePosition);
 
-	private void OnTimerTimeout()
-	{
-		_mouseClicked = false;
-		GD.Print("The World");
+		if (Mathf.IsZeroApprox(distance))
+		{
+			isMouseClicked = false;
+		}
 	}
 
 	//  // Called every frame. 'delta' is the elapsed time since the previous frame.
